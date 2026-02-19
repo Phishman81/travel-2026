@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Roadtrip 2026">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸš</text></svg>">
+<title>Roadtrip 2026 â€“ Familie Schmidt</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFF9F0 0%, #FFF3E0 30%, #E8F5E9 70%, #E3F2FD 100%);
+  font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+  color: #37474F;
+  -webkit-font-smoothing: antialiased;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #FFCC80; border-radius: 3px; }
+
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes wiggle { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideDown { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 2000px; } }
+
+.container { max-width: 580px; margin: 0 auto; padding: 0 16px; }
+
+/* Header */
+.header { text-align: center; padding: 32px 20px 20px; animation: fadeUp 0.8s ease; }
+.header-van { font-size: 52px; display: inline-block; animation: float 3s ease-in-out infinite; }
+.header h1 { font-family: 'Quicksand', sans-serif; font-size: 28px; font-weight: 800; color: #37474F; margin: 8px 0 4px; letter-spacing: -0.5px; }
+.header .subtitle { color: #78909C; font-size: 14px; font-weight: 600; }
+.header .family { color: #90A4AE; font-size: 13px; margin-top: 4px; }
+
+/* Stats */
+.stats { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; animation: fadeUp 0.8s ease 0.15s both; }
+.stat-card {
+  background: white; border-radius: 16px; padding: 12px 16px; text-align: center;
+  min-width: 110px; flex: 1 1 110px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  border: 1px solid #F5F5F5; transition: transform 0.2s ease;
+}
+.stat-card:hover { transform: translateY(-2px); }
+.stat-emoji { font-size: 22px; }
+.stat-val { font-size: 20px; font-weight: 800; color: #37474F; margin-top: 2px; }
+.stat-label { font-size: 10px; color: #90A4AE; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-sub { font-size: 10px; color: #B0BEC5; margin-top: 1px; }
+
+/* Map */
+.map-wrap { animation: fadeUp 0.8s ease 0.3s both; margin-bottom: 24px; }
+.map-container {
+  background: white; border-radius: 20px; overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #E0E0E0;
+}
+.map-header {
+  padding: 12px 18px 8px; display: flex; align-items: center; gap: 8;
+  border-bottom: 1px solid #F5F5F5;
+}
+.map-header-title { font-family: 'Quicksand'; font-weight: 700; font-size: 14px; color: #455A64; }
+.map-header-sub { font-size: 11px; color: #90A4AE; margin-left: auto; }
+.map-area {
+  position: relative; width: 100%; padding-bottom: 55%;
+  background: linear-gradient(170deg, #E3F2FD 0%, #E8F5E9 40%, #FFF9C4 70%, #FFECB3 100%);
+}
+.map-dot {
+  position: absolute; transform: translate(-50%, -50%);
+  z-index: 3; text-align: center; cursor: pointer; transition: all 0.3s ease;
+}
+.map-dot:hover { z-index: 10; }
+.map-dot:hover .dot-circle { transform: scale(1.3); }
+.dot-circle {
+  width: 24px; height: 24px; border-radius: 50%; border: 2px solid white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; transition: all 0.3s ease; margin: 0 auto;
+}
+.dot-circle.selected { width: 30px; height: 30px; font-size: 15px; }
+.dot-label {
+  font-size: 7px; color: #455A64; font-weight: 700; white-space: nowrap;
+  background: rgba(255,255,255,0.9); border-radius: 4px; padding: 1px 4px;
+  margin-top: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: inline-block;
+}
+.map-water {
+  position: absolute; font-size: 9px; color: #64B5F6; font-weight: 700;
+  opacity: 0.5; font-style: italic;
+}
+.map-home {
+  position: absolute; transform: translate(-50%, -50%); z-index: 5; text-align: center;
+}
+.map-home-icon { font-size: 16px; animation: wiggle 2s ease-in-out infinite; }
+.map-home-label {
+  font-size: 7px; color: #546E7A; font-weight: 700; white-space: nowrap;
+  background: rgba(255,255,255,0.85); border-radius: 4px; padding: 1px 4px; margin-top: 1px;
+}
+
+/* Section title */
+.section-title {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
+  animation: fadeUp 0.8s ease 0.5s both;
+}
+.section-title span:last-child { font-family: 'Quicksand'; font-weight: 800; font-size: 18px; color: #37474F; }
+
+/* Camp Cards */
+.camp-card {
+  background: white; border-radius: 20px; margin-bottom: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05); border: 2px solid #F5F5F5;
+  overflow: hidden; transition: all 0.3s ease;
+}
+.camp-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
+.camp-card.open { border-color: var(--camp-color, #999); }
+.camp-bar { height: 4px; }
+.camp-header { padding: 14px 18px 12px; cursor: pointer; display: flex; align-items: flex-start; gap: 12px; }
+.camp-icon {
+  width: 44px; height: 44px; border-radius: 14px; display: flex;
+  align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0;
+}
+.camp-meta { font-size: 10px; font-weight: 700; color: #90A4AE; letter-spacing: 0.5px; text-transform: uppercase; }
+.camp-name { font-size: 16px; font-weight: 800; color: #263238; margin-top: 4px; font-family: 'Quicksand'; line-height: 1.2; }
+.camp-loc { font-size: 12px; color: #78909C; margin-top: 2px; }
+.camp-status {
+  font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 6px; white-space: nowrap;
+}
+.camp-arrow {
+  font-size: 16px; color: #B0BEC5; flex-shrink: 0; margin-top: 8px;
+  transition: transform 0.3s ease;
+}
+.camp-card.open .camp-arrow { transform: rotate(180deg); }
+
+/* Expanded content */
+.camp-details { padding: 0 18px 18px; animation: slideDown 0.3s ease; }
+.camp-desc {
+  font-size: 13px; color: #546E7A; line-height: 1.6; margin: 0 0 12px;
+  padding: 10px 14px; background: #FAFAFA; border-radius: 12px; border-left: 3px solid var(--camp-color);
+}
+.camp-highlights { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.camp-highlight {
+  font-size: 11px; padding: 4px 10px; border-radius: 8px; font-weight: 600;
+}
+.activity-title {
+  font-size: 11px; font-weight: 700; color: #78909C;
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
+}
+.activity-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px; border-radius: 12px; border: 1px solid #F0F0F0;
+  margin-bottom: 6px; transition: transform 0.2s ease;
+}
+.activity-item:nth-child(odd) { background: #FAFAFA; }
+.activity-item:hover { transform: scale(1.01); }
+.activity-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.activity-name { font-size: 13px; font-weight: 700; color: #37474F; }
+.activity-desc { font-size: 11px; color: #78909C; line-height: 1.5; margin-top: 2px; }
+.camp-ref { margin-top: 12px; font-size: 10px; color: #B0BEC5; text-align: right; font-weight: 600; }
+
+/* Future / reminder / footer */
+.future-card {
+  background: white; border-radius: 20px; padding: 20px 18px;
+  border: 2px dashed #E0E0E0; text-align: center; margin-bottom: 14px;
+}
+.future-emoji { font-size: 36px; }
+.future-title { font-family: 'Quicksand'; font-size: 16px; font-weight: 800; color: #90A4AE; margin-top: 6px; }
+.future-sub { font-size: 12px; color: #B0BEC5; margin-top: 4px; }
+.reminder {
+  background: #FFF8E1; border: 1px solid #FFE082; border-radius: 16px;
+  padding: 14px 18px; display: flex; align-items: center; gap: 12px; margin-top: 20px;
+}
+.reminder-title { font-size: 12px; font-weight: 800; color: #E65100; }
+.reminder-text { font-size: 12px; color: #BF360C; margin-top: 2px; }
+.footer { text-align: center; margin-top: 28px; padding-bottom: 40px; font-size: 11px; color: #B0BEC5; }
+
+/* Route SVG */
+.route-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+.route-line {
+  stroke-dasharray: 1.5,1; opacity: 0.7;
+  animation: drawRoute 2s ease forwards;
+}
+@keyframes drawRoute { from { stroke-dashoffset: 300; } to { stroke-dashoffset: 0; } }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const BOOKINGS = [
+  {
+    id: 1, startDate: "2026-05-10", endDate: "2026-05-12",
+    name: "Camping de l'Etang des Forges", location: "Belfort", region: "Franche-Comté",
+    nights: 2, cost: 43.32, status: "confirmed", lat: 47.6408, lng: 6.8493,
+    ref: "B488713", color: "#4CAF50", emoji: "🏞️",
+    website: "https://www.onlycamp.fr/camping/camping-de-l-etang-des-forges",
+    maps: "https://maps.google.com/?q=Camping+de+l+Etang+des+Forges+Belfort",
+    description: "Idyllischer Campingplatz direkt am See, mitten in der Stadt Belfort. Perfekt zum Ankommen nach der ersten Etappe.",
+    highlights: ["Direkt am See gelegen", "Stadtnah – Altstadt fußläufig", "Ruhig trotz Stadtlage"],
+    activities: [
+      { icon: "🦁", name: "Löwe von Belfort", desc: "Das Wahrzeichen der Stadt – beeindruckende Skulptur auf der Zitadelle" },
+      { icon: "🏰", name: "Zitadelle Belfort", desc: "Festung mit tollem Ausblick, auch mit Kinderwagen machbar" },
+      { icon: "🦆", name: "See-Spaziergang", desc: "Gemütliche Runde um den Étang des Forges, Enten füttern" }
+    ]
+  },
+  {
+    id: 2, startDate: "2026-05-12", endDate: "2026-05-14",
+    name: "Camping de la Plage de Seurre", location: "Pouilly-sur-Saône", region: "Burgund",
+    nights: 2, cost: 56.58, status: "confirmed", lat: 47.0072, lng: 5.1083,
+    ref: "Acompte 19,47 €", color: "#8BC34A", emoji: "🍇",
+    website: "https://camping.mairie-seurre.fr",
+    maps: "https://maps.google.com/?q=Camping+de+la+Plage+Seurre+Pouilly-sur-Saone",
+    description: "Kleiner, familiärer Platz an der Saône in Burgund. Ideal zum Durchatmen zwischen zwei Etappen.",
+    highlights: ["Direkt am Fluss Saône", "Ruhige, ländliche Lage", "Klassisches Burgund-Flair"],
+    activities: [
+      { icon: "🚣", name: "Saône-Ufer", desc: "Spaziergang am Flussufer, Angeln, Natur genießen" },
+      { icon: "🏘️", name: "Beaune (40 Min.)", desc: "Hübsche Altstadt, Hôtel-Dieu – kurzer Tagesausflug möglich" },
+      { icon: "🧺", name: "Picknick", desc: "Lokale Produkte aus Burgund: Käse, Brot, Senf aus Dijon" }
+    ]
+  },
+  {
+    id: 3, startDate: "2026-05-14", endDate: "2026-05-19",
+    name: "Huttopia Royat", location: "Clermont-Ferrand", region: "Auvergne",
+    nights: 5, cost: 214.00, status: "confirmed", lat: 45.7676, lng: 3.0494,
+    ref: "B3008960", color: "#FF5722", emoji: "🌋",
+    website: "https://europe.huttopia.com/site/camping-royat/",
+    maps: "https://maps.google.com/?q=Huttopia+Royat+Clermont-Ferrand",
+    description: "Naturcamping am Fuß der Vulkankette. 5 Tage Basis für Vulkane, Seen und Abenteuer in der Auvergne!",
+    highlights: ["Mitten in der Vulkanlandschaft", "Huttopia-Qualität: naturnah & stilvoll", "Pool, Restaurant, Bäckerei"],
+    activities: [
+      { icon: "🌋", name: "Vulcania", desc: "Vulkan-Freizeitpark, auch für Kinder ab 3. Ganzer Tag! Ca. 28–33 € Erw." },
+      { icon: "⛰️", name: "Puy de Dôme", desc: "Mit Zahnradbahn auf 1.465m. 360°-Panorama! Auch mit 4-Jährigem machbar." },
+      { icon: "🏖️", name: "Lac d'Aydat", desc: "Größter See der Auvergne. Badestrand mit Bambini-Zone (Jul/Aug)." },
+      { icon: "🦕", name: "Volcan de Lemptégy", desc: "Echten Vulkan von innen erkunden – zu Fuß oder mit kleinem Zug." }
+    ]
+  },
+  {
+    id: 4, startDate: "2026-05-19", endDate: "2026-05-23",
+    name: "Huttopia Millau", location: "Millau", region: "Aveyron",
+    nights: 4, cost: 90.48, status: "confirmed", lat: 44.0985, lng: 3.0783,
+    ref: "B3009978", color: "#FF9800", emoji: "🌉",
+    website: "https://europe.huttopia.com/site/camping-millau/",
+    maps: "https://maps.google.com/?q=Huttopia+Millau",
+    description: "Am Ufer des Tarn, im Schatten des berühmten Viadukts. Natur pur mit Schluchten und Flüssen.",
+    highlights: ["Direkt am Fluss Tarn", "Blick auf das Viadukt von Millau", "Stellplatz Komfort"],
+    activities: [
+      { icon: "🌉", name: "Viadukt von Millau", desc: "Höchste Brücke der Welt! Aussichtspunkt + Infozentrum." },
+      { icon: "🛶", name: "Gorges du Tarn", desc: "Kanu fahren in der Tarn-Schlucht – spektakuläre Landschaft." },
+      { icon: "🧀", name: "Roquefort (20 Min.)", desc: "Käsehöhlen besichtigen – der echte Roquefort kommt von hier!" },
+      { icon: "🥾", name: "Wandern", desc: "Leichte Wege entlang des Tarn, auch mit Kinderwagen." }
+    ]
+  },
+  {
+    id: 5, startDate: "2026-05-23", endDate: "2026-05-27",
+    name: "Les Méditerranées Beach Garden", location: "Marseillan-Plage", region: "Languedoc",
+    nights: 4, cost: 180.10, status: "confirmed", lat: 43.3147, lng: 3.5481,
+    ref: "17676166", color: "#00BCD4", emoji: "🏖️",
+    website: "https://www.lesmediterranees.com/camping-beach-garden/",
+    maps: "https://maps.google.com/?q=Les+Mediterranees+Beach+Garden+Marseillan-Plage",
+    description: "5-Sterne-Camping direkt am Mittelmeer! Strand, Pool, Entspannung pur. Erster richtiger Strandurlaub der Reise.",
+    highlights: ["Direkter Strandzugang", "Großer Pool & Kinderbereich", "⚠️ Restzahlung 129 € bis 23.04."],
+    activities: [
+      { icon: "🦕", name: "Dino-Park Mèze", desc: "Dinosaurier-Freiluftmuseum! Ausgrabungs-Sandkasten für Kids. Ab 3 J." },
+      { icon: "🏖️", name: "Strand & Meer", desc: "Flacher Sandstrand, perfekt für Kleinkinder." },
+      { icon: "⛵", name: "Étang de Thau", desc: "Kleine Bootsfahrt auf der Lagune, Austern probieren." },
+      { icon: "🎡", name: "Cap d'Agde (15 Min.)", desc: "Rummelplatz und Aquarium als Schlechtwetter-Option." }
+    ]
+  },
+  {
+    id: 6, startDate: "2026-05-27", endDate: "2026-05-30",
+    name: "Camping de la Cité", location: "Carcassonne", region: "Okzitanien",
+    nights: 3, cost: 74.58, status: "pending", lat: 43.2065, lng: 2.3631,
+    ref: "O20260216SCHMI19408726", color: "#9C27B0", emoji: "🏰",
+    website: "https://www.campingdelacite.com/",
+    maps: "https://maps.google.com/?q=Camping+de+la+Cite+Carcassonne",
+    description: "Camping mit Blick auf die Märchenburg! Die Cité de Carcassonne ist ein Traum für Kinder.",
+    highlights: ["3 km zur mittelalterlichen Cité", "Pool & schattige Stellplätze", "Canal du Midi in der Nähe"],
+    activities: [
+      { icon: "🏰", name: "Cité de Carcassonne", desc: "Echte Ritterburg! Türme, Zugbrücke, Zinnen. Eintritt Altstadt: frei." },
+      { icon: "🚢", name: "Canal du Midi", desc: "UNESCO-Welterbe. Bootsfahrt oder Spaziergang unter Platanen." },
+      { icon: "🏊", name: "Lac de la Cavayère", desc: "Kleiner Badesee mit Strand & Spielplatz, 5 km südlich." },
+      { icon: "🍲", name: "Cassoulet probieren", desc: "Das berühmte Bohnengericht – gibt's auch kinderfreundlich!" }
+    ]
+  },
+  {
+    id: 7, startDate: "2026-05-30", endDate: "2026-06-02",
+    name: "Yelloh! Village Les 3 Vallées", location: "Argelès-Gazost", region: "Pyrenäen",
+    nights: 3, cost: 98.76, status: "confirmed", lat: 43.0014, lng: -0.0886,
+    ref: "O20260217SCHMI75985723", color: "#795548", emoji: "⛰️",
+    website: "https://www.yellohvillage.de/camping/les_3_vallees",
+    maps: "https://maps.google.com/?q=Yelloh+Village+Les+3+Vallees+Argeles-Gazost",
+    description: "Mitten in den Pyrenäen! Bergluft, Panorama und ein top ausgestatteter Familien-Campingplatz.",
+    highlights: ["Bergpanorama", "Beheizter Pool & Wasserpark", "Yelloh!-Qualität: Animation & Spielplatz"],
+    activities: [
+      { icon: "⛰️", name: "Pic du Midi (Seilbahn)", desc: "Auf 2.877m Höhe – Sternwarte & grandioses Panorama." },
+      { icon: "🐻", name: "Tierpark Pyrenäen", desc: "Parc Animalier des Pyrénées – Bären, Murmeltiere, Greifvögel." },
+      { icon: "♨️", name: "Thermalquellen", desc: "Cauterets oder Luz-Saint-Sauveur – auch mit Kindern entspannend." },
+      { icon: "🥾", name: "Cirque de Gavarnie", desc: "UNESCO-Welterbe. Leichte Wanderung zum riesigen Wasserfall." }
+    ]
+  },
+  {
+    id: 8, startDate: "2026-06-02", endDate: "2026-06-07",
+    name: "Camping Ur-Onea", location: "Bidart", region: "Baskenland (FR)",
+    nights: 5, cost: 171.40, status: "confirmed", lat: 43.4372, lng: -1.5889,
+    ref: "17683485", color: "#E91E63", emoji: "🌊",
+    website: "https://www.uronea.com/",
+    maps: "https://maps.google.com/?q=Camping+Ur-Onea+Bidart",
+    description: "Baskische Atlantikküste! Surferstrände, baskische Küche und Ausflüge nach Biarritz und Bayonne.",
+    highlights: ["Nahe Biarritz & Bayonne", "Pitch Confort mit 10A Strom", "Strandnähe"],
+    activities: [
+      { icon: "🌊", name: "Strände von Bidart", desc: "Traumhafte Surfstrände, auch ruhigere Buchten für Kleinkinder." },
+      { icon: "🏙️", name: "Biarritz (10 Min.)", desc: "Eleganter Badeort, Aquarium, Leuchtturm, tolle Restaurants." },
+      { icon: "🍷", name: "Bayonne (15 Min.)", desc: "Schinken & Schokolade! Nette Altstadt am Fluss." },
+      { icon: "🚂", name: "La Rhune (Zahnradbahn)", desc: "Historische Bahn auf den Hausberg – Panorama über Baskenland." }
+    ]
+  },
+  {
+    id: 9, startDate: "2026-06-07", endDate: "2026-06-11",
+    name: "Gran Camping Zarautz", location: "Zarautz", region: "Baskenland (ES)",
+    nights: 4, cost: 200.00, status: "confirmed", lat: 43.2847, lng: -2.1700,
+    ref: "130318", color: "#F44336", emoji: "🏄",
+    website: "https://www.grancampingzarautz.com/",
+    maps: "https://maps.google.com/?q=Gran+Camping+Zarautz",
+    description: "Erster Stopp in Spanien! Stellplatz mit Meerblick am längsten Strand des Baskenlandes. San Sebastián um die Ecke.",
+    highlights: ["Stellplatz mit Meerblick!", "Längster Strand des Baskenlandes", "20 Min. nach San Sebastián"],
+    activities: [
+      { icon: "🍽️", name: "San Sebastián (20 Min.)", desc: "Pintxos-Tour in der Altstadt! Welthauptstadt der Gastronomie." },
+      { icon: "🏄", name: "Strand Zarautz", desc: "2,5 km Sandstrand – Surfer-Hotspot, aber auch familienfreundlich." },
+      { icon: "🐟", name: "Getaria (5 Min.)", desc: "Malerisches Fischerdorf. Gegrillter Fisch direkt am Hafen." },
+      { icon: "🏞️", name: "Flysch Route", desc: "Spektakuläre Küstenwanderung zwischen Zumaia und Deba." }
+    ]
+  },
+  {
+    id: 10, startDate: "2026-06-11", endDate: "2026-06-17",
+    name: "Camping Playa Joyel", location: "Noja", region: "Kantabrien (ES)",
+    nights: 6, cost: 241.74, status: "confirmed", lat: 43.4833, lng: -3.5333,
+    ref: "Nr. 1767", color: "#FF6F00", emoji: "🌅",
+    website: "https://www.playajoyel.com/",
+    maps: "https://maps.google.com/?q=Camping+Playa+Joyel+Noja+Cantabria",
+    description: "Traumhafter Strandcamping an der Playa de Ris in Kantabrien. Direkt am Meer, mit Dünen und Naturpark.",
+    highlights: ["Direkt an der Playa de Ris", "Naturpark Marismas de Santoña nebenan", "6 Nächte – Rabatt bereits eingerechnet"],
+    activities: [
+      { icon: "🏖️", name: "Playa de Ris", desc: "Herrlicher Sandstrand direkt am Campingplatz – ideal für Kleinkinder." },
+      { icon: "🐦", name: "Naturpark Marismas de Santoña", desc: "Vogelparadies und Naturschutzgebiet – Bootsausflüge möglich." },
+      { icon: "⛵", name: "Santoña (5 Min.)", desc: "Hübsche Hafenstadt mit frischem Fisch und Anchovis-Kultur." },
+      { icon: "🏰", name: "Laredo (15 Min.)", desc: "Historische Altstadt und langer Sandstrand." }
+    ]
+  }
+];
+
+const STATUS = {
+  confirmed: { label: "Bestätigt", emoji: "✅", bg: "#E8F5E9", border: "#66BB6A", text: "#2E7D32" },
+  pending: { label: "Angefragt", emoji: "⏳", bg: "#FFF8E1", border: "#FFB74D", text: "#E65100" },
+};
+
+const fmt = (d) => new Date(d).toLocaleDateString("de-DE", { day: "numeric", month: "short" });
+
+const mapBounds = { minLat: 42.0, maxLat: 48.2, minLng: -4.5, maxLng: 7.5 };
+const toPos = (lat, lng) => ({
+  x: ((lng - mapBounds.minLng) / (mapBounds.maxLng - mapBounds.minLng)) * 100,
+  y: ((mapBounds.maxLat - lat) / (mapBounds.maxLat - mapBounds.minLat)) * 100
+});
+
+function App() {
+  const [selected, setSelected] = React.useState(null);
+
+  const totalNights = BOOKINGS.reduce((s, b) => s + b.nights, 0);
+  const knownCosts = BOOKINGS.filter(b => b.cost);
+  const totalCost = knownCosts.reduce((s, b) => s + b.cost, 0);
+  const knownNights = knownCosts.reduce((s, b) => s + b.nights, 0);
+  const confirmedN = BOOKINGS.filter(b => b.status === "confirmed").reduce((s, b) => s + b.nights, 0);
+
+  const scrollTo = (id) => {
+    setSelected(id);
+    setTimeout(() => {
+      const el = document.getElementById("camp-" + id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
+  };
+
+  const homePos = toPos(47.583, 9.883);
+  const routePoints = BOOKINGS.map(b => toPos(b.lat, b.lng));
+
+  return (
+    <>
+      <div className="header">
+        <div className="header-van">🚐</div>
+        <h1>Unser großes Abenteuer 2026</h1>
+        <div className="subtitle">🇫🇷 Frankreich &amp; 🇪🇸 Spanien · Mai bis August</div>
+        <div className="family">Patrick &amp; Lisa mit Anton (4) und Frieda (1)</div>
+      </div>
+
+      <div className="container">
+        <div className="stats">
+          {[
+            { emoji: "🌙", val: totalNights, label: "Nächte", sub: confirmedN + " bestätigt" },
+            { emoji: "📍", val: BOOKINGS.length, label: "Stopps", sub: BOOKINGS.filter(b=>b.status==="confirmed").length + "✅ " + BOOKINGS.filter(b=>b.status==="pending").length + "⏳" },
+            { emoji: "💰", val: Math.round(totalCost) + "€", label: "Kosten", sub: "bekannt" },
+            { emoji: "📊", val: "~" + Math.round(totalCost / knownNights) + "€", label: "Ø/Nacht", sub: knownNights + " Nächte" },
+          ].map((s, i) => (
+            <div key={i} className="stat-card">
+              <div className="stat-emoji">{s.emoji}</div>
+              <div className="stat-val">{s.val}</div>
+              <div className="stat-label">{s.label}</div>
+              <div className="stat-sub">{s.sub}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="map-wrap">
+          <div className="map-container">
+            <div className="map-header">
+              <span style={{fontSize:18}}>🗺️</span>
+              <span className="map-header-title">Unsere Route</span>
+              <span className="map-header-sub">Lindenberg → Kantabrien</span>
+            </div>
+            <div className="map-area">
+              <svg className="route-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <polyline
+                  points={routePoints.map(p => p.x + "," + p.y).join(" ")}
+                  fill="none" stroke="#FF8A65" strokeWidth="0.4"
+                  className="route-line"
+                />
+              </svg>
+              <div className="map-home" style={{ left: homePos.x + "%", top: homePos.y + "%" }}>
+                <div className="map-home-icon">🏠</div>
+                <div className="map-home-label">Lindenberg</div>
+              </div>
+              <div className="map-water" style={{ right: "5%", top: "68%" }}>Mittelmeer</div>
+              <div className="map-water" style={{ left: "2%", top: "40%", transform: "rotate(-15deg)" }}>Atlantik</div>
+              {BOOKINGS.map((b, i) => {
+                const pos = toPos(b.lat, b.lng);
+                const isSel = selected === b.id;
+                return (
+                  <div key={b.id} className="map-dot" onClick={() => scrollTo(b.id)}
+                    style={{ left: pos.x + "%", top: pos.y + "%", zIndex: isSel ? 10 : 3 }}>
+                    <div className={"dot-circle" + (isSel ? " selected" : "")}
+                      style={{ background: b.color, boxShadow: "0 2px 8px " + b.color + "44" }}>
+                      {b.emoji}
+                    </div>
+                    <div className="dot-label">{i+1}. {b.location}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <div className="section-title">
+          <span style={{fontSize:20}}>📋</span>
+          <span>Alle Stopps</span>
+        </div>
+
+        {BOOKINGS.map((b, i) => {
+          const status = STATUS[b.status];
+          const isOpen = selected === b.id;
+          return (
+            <div key={b.id} id={"camp-" + b.id}
+              className={"camp-card" + (isOpen ? " open" : "")}
+              style={{ "--camp-color": b.color + "66", animationDelay: (0.5 + i * 0.07) + "s", animation: "fadeUp 0.5s ease both" }}>
+              <div className="camp-bar" style={{ background: "linear-gradient(90deg, " + b.color + ", " + b.color + "88)" }} />
+              <div className="camp-header" onClick={() => setSelected(isOpen ? null : b.id)}>
+                <div className="camp-icon" style={{ background: b.color + "15" }}>{b.emoji}</div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                    <div className="camp-meta">
+                      Stopp {i+1} · {fmt(b.startDate)}–{fmt(b.endDate)} · {b.nights} Nächte
+                    </div>
+                    <span className="camp-status" style={{ background: status.bg, color: status.text, border: "1px solid " + status.border }}>
+                      {status.emoji} {status.label}
+                    </span>
+                  </div>
+                  <div className="camp-name">{b.name}</div>
+                  <div className="camp-loc">
+                    📍 {b.location} · {b.region}
+                    {b.cost && <span style={{marginLeft:8}}>💰 {b.cost.toFixed(2).replace(".",",")} €</span>}
+                  </div>
+                </div>
+                <div className="camp-arrow">▾</div>
+              </div>
+
+              {isOpen && (
+                <div className="camp-details">
+                  <p className="camp-desc" style={{ borderLeftColor: b.color }}>{b.description}</p>
+                  <div className="camp-highlights">
+                    {b.highlights.map((h, j) => (
+                      <span key={j} className="camp-highlight"
+                        style={{ background: b.color + "10", color: b.color, border: "1px solid " + b.color + "22" }}>
+                        ✦ {h}
+                      </span>
+                    ))}
+                  </div>
+                  <div style={{ display: "flex", gap: 8, margin: "12px 0 8px", flexWrap: "wrap" }}>
+                    <a href={b.website} target="_blank" rel="noopener noreferrer"
+                      style={{ display:"inline-flex", alignItems:"center", gap:4, background: b.color + "15",
+                        color: b.color, border: "1px solid " + b.color + "33", borderRadius: 8,
+                        padding: "5px 10px", fontSize: 12, fontWeight: 700, textDecoration: "none" }}>
+                      🌐 Website
+                    </a>
+                    <a href={b.maps} target="_blank" rel="noopener noreferrer"
+                      style={{ display:"inline-flex", alignItems:"center", gap:4, background: "#E3F2FD",
+                        color: "#1565C0", border: "1px solid #BBDEFB", borderRadius: 8,
+                        padding: "5px 10px", fontSize: 12, fontWeight: 700, textDecoration: "none" }}>
+                      📍 Google Maps
+                    </a>
+                  </div>
+                  <div className="activity-title">🎯 Ausflugstipps</div>
+                  {b.activities.map((a, j) => (
+                    <div key={j} className="activity-item">
+                      <span className="activity-icon">{a.icon}</span>
+                      <div>
+                        <div className="activity-name">{a.name}</div>
+                        <div className="activity-desc">{a.desc}</div>
+                      </div>
+                    </div>
+                  ))}
+                  {b.ref && <div className="camp-ref">Ref: {b.ref}</div>}
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+        <div className="future-card">
+          <div className="future-emoji">🗺️</div>
+          <div className="future-title">Ab 17. Juni: Weitere Stopps &amp; Rückreise</div>
+          <div className="future-sub">Kantabrien → Nordfrankreich → Lindenberg · Noch zu planen</div>
+        </div>
+
+        <div className="reminder">
+          <span style={{fontSize:24}}>⚠️</span>
+          <div>
+            <div className="reminder-title">Zahlungserinnerung</div>
+            <div className="reminder-text"><strong>Bis 23. April 2026:</strong> Restzahlung Beach Garden Marseillan – 129,07 €</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="footer">
+        Stand: Februar 2026 · Mit ❤️ geplant für Familie Schmidt
+      </div>
+    </>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById("app"));
+</script>
+</body>
+</html>
