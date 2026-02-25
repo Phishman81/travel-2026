@@ -6,8 +6,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Roadtrip 2026">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸš</text></svg>">
-<title>Roadtrip 2026 â€“ Familie Schmidt</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚐</text></svg>">
+<title>Roadtrip 2026 – Familie Schmidt</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -335,8 +335,8 @@ const BOOKINGS = [
   {
     id: 10, startDate: "2026-06-11", endDate: "2026-06-17",
     name: "Camping Playa Joyel", location: "Noja", region: "Kantabrien (ES)",
-    nights: 6, cost: 241.74, status: "confirmed", lat: 43.4833, lng: -3.5333,
-    ref: "Nr. 1767", color: "#FF6F00", emoji: "🌅",
+    nights: 6, cost: 266.40, status: "confirmed", lat: 43.4833, lng: -3.5333,
+    ref: "1767", color: "#FF6F00", emoji: "🌅",
     website: "https://www.playajoyel.com/",
     maps: "https://maps.google.com/?q=Camping+Playa+Joyel+Noja+Cantabria",
     description: "Traumhafter Strandcamping an der Playa de Ris in Kantabrien. Direkt am Meer, mit Dünen und Naturpark.",
@@ -346,6 +346,22 @@ const BOOKINGS = [
       { icon: "🐦", name: "Naturpark Marismas de Santoña", desc: "Vogelparadies und Naturschutzgebiet – Bootsausflüge möglich." },
       { icon: "⛵", name: "Santoña (5 Min.)", desc: "Hübsche Hafenstadt mit frischem Fisch und Anchovis-Kultur." },
       { icon: "🏰", name: "Laredo (15 Min.)", desc: "Historische Altstadt und langer Sandstrand." }
+    ]
+  },
+  {
+    id: 11, startDate: "2026-06-17", endDate: "2026-06-22",
+    name: "Camping La Paz", location: "Vidiago / Llanes", region: "Asturien (ES)",
+    nights: 5, cost: 333.50, status: "confirmed", lat: 43.4007, lng: -4.6518,
+    ref: "E-Mail von delfin@campinglapaz.com", color: "#43A047", emoji: "🌊",
+    website: "https://campinglapaz.com/",
+    maps: "https://www.google.com/maps/place/?q=place_id:ChIJZ6rF7eSVSQ0RvCmsSkrqxkA",
+    description: "Terrassierter Campingplatz direkt über der Playa de Vidiago – spektakulärer Meerblick von fast jedem Stellplatz. Natur pur zwischen Atlantik und Picos de Europa.",
+    highlights: ["⚠️ Steile Zufahrt – Anfahrt vorab in Street View prüfen!", "Direktzugang Playa de Vidiago", "Restaurant mit Terrasse & Meerblick", "Jakobsweg führt durch den Platz"],
+    activities: [
+      { icon: "🏖️", name: "Playa de Vidiago", desc: "Wilder Atlantikstrand direkt unter dem Camping – ideal zum Entdecken." },
+      { icon: "🏰", name: "Llanes (15 Min.)", desc: "Hübsche mittelalterliche Hafenstadt mit Altstadt und bunten Strand-Cubos." },
+      { icon: "⛰️", name: "Picos de Europa (1 Std.)", desc: "Dramatische Berglandschaft – Aussichtspunkte auch mit Kinderwagen erreichbar." },
+      { icon: "🌊", name: "Bufón de Arenillas", desc: "Meerwasser-Geysir an der Küste – spektakuläres Naturschauspiel in der Nähe." }
     ]
   }
 ];
@@ -357,7 +373,7 @@ const STATUS = {
 
 const fmt = (d) => new Date(d).toLocaleDateString("de-DE", { day: "numeric", month: "short" });
 
-const mapBounds = { minLat: 42.0, maxLat: 48.2, minLng: -4.5, maxLng: 7.5 };
+const mapBounds = { minLat: 42.0, maxLat: 48.2, minLng: -5.2, maxLng: 7.5 };
 const toPos = (lat, lng) => ({
   x: ((lng - mapBounds.minLng) / (mapBounds.maxLng - mapBounds.minLng)) * 100,
   y: ((mapBounds.maxLat - lat) / (mapBounds.maxLat - mapBounds.minLat)) * 100
@@ -523,11 +539,6 @@ function App() {
           );
         })}
 
-        <div className="future-card">
-          <div className="future-emoji">🗺️</div>
-          <div className="future-title">Ab 17. Juni: Weitere Stopps &amp; Rückreise</div>
-          <div className="future-sub">Kantabrien → Nordfrankreich → Lindenberg · Noch zu planen</div>
-        </div>
 
         <div className="reminder">
           <span style={{fontSize:24}}>⚠️</span>
