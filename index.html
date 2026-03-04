@@ -723,8 +723,8 @@
       {
         id: 6, startDate: "2026-05-27", endDate: "2026-05-30",
         name: "Camping de la Cité", location: "Carcassonne", region: "Okzitanien",
-        nights: 3, cost: 74.58, status: "confirmed", lat: 43.2065, lng: 2.3631,
-        ref: "O20260216SCHMI19408726 · Zahlung: P20260225SCHMI253980431", color: "#9C27B0", emoji: "🏰",
+        nights: 3, cost: 74.58, status: "pending", lat: 43.2065, lng: 2.3631,
+        ref: "O20260216SCHMI19408726", color: "#9C27B0", emoji: "🏰",
         website: "https://campingcitecarcassonne.com/",
         maps: "https://maps.google.com/?q=Camping+de+la+Cite+Carcassonne",
         description: "Camping mit Blick auf die Märchenburg! Die Cité de Carcassonne ist ein Traum für Kinder.",
@@ -815,6 +815,38 @@
           { icon: "⛰️", name: "Picos de Europa (1 Std.)", desc: "Dramatische Berglandschaft – Aussichtspunkte auch mit Kinderwagen erreichbar." },
           { icon: "🌊", name: "Bufón de Arenillas", desc: "Meerwasser-Geysir an der Küste – spektakuläres Naturschauspiel in der Nähe." }
         ]
+      },
+      {
+        id: 12, startDate: "2026-06-22", endDate: "2026-06-26",
+        name: "Camping Le Pavillon Royal", location: "Bidart", region: "Baskenland (FR)",
+        nights: 4, cost: 279.88, status: "pending", lat: 43.4372, lng: -1.5889,
+        ref: "O20260304SCHMI47922568", color: "#E91E63", emoji: "🏖️",
+        website: "https://www.pavillon-royal.com/en/welcome/",
+        maps: "https://maps.google.com/?q=Camping+Le+Pavillon+Royal+Bidart",
+        description: "5-Sterne-Rückkehr an die Baskenküste! Auf dem Heimweg nochmal Bidart genießen – diesmal mit Meerblick, Pool und direktem Strandzugang.",
+        highlights: ["RED area Pitch (Wohnwagenstellplatz)", "Anzahlung 87€ bezahlt – Restbetrag 192,88€ vor Ort", "Finale Bestätigung durch Rezeption ausstehend"],
+        activities: [
+          { icon: "🌊", name: "Strände von Bidart", desc: "Traumhafte Surfstrände, auch ruhigere Buchten für Kleinkinder." },
+          { icon: "🏙️", name: "Biarritz (10 Min.)", desc: "Eleganter Badeort, Aquarium, Leuchtturm, tolle Restaurants." },
+          { icon: "🍷", name: "Bayonne (15 Min.)", desc: "Schinken & Schokolade! Nette Altstadt am Fluss." },
+          { icon: "🚂", name: "La Rhune (Zahnradbahn)", desc: "Historische Bahn auf den Hausberg – Panorama über Baskenland." }
+        ]
+      },
+      {
+        id: 13, startDate: "2026-06-26", endDate: "2026-07-03",
+        name: "Camping Les Pastourelles", location: "Claouey / Cap Ferret", region: "Bassin d'Arcachon (FR)",
+        nights: 7, cost: 276.34, status: "pending", lat: 44.7617, lng: -1.1417,
+        ref: "O20260304SCHMI18501316", color: "#0288D1", emoji: "🌲",
+        website: "https://www.campinglespastourelles.fr/",
+        maps: "https://maps.google.com/?q=Camping+Les+Pastourelles+Claouey+Cap+Ferret",
+        description: "Kommunaler Pinienwald-Camping direkt am Bassin d'Arcachon. 13 Hektar Schatten, ruhig, wohnwagenfreundlich – perfekter Erholungsstopp nach Spanien.",
+        highlights: ["13 ha Pinienwald – viel Schatten", "Direkt am Bassin-Strand", "Anzahlung 66€ bezahlt – Restbetrag 210,34€ vor Ort", "Finale Bestätigung durch Rezeption ausstehend"],
+        activities: [
+          { icon: "🚴", name: "Vélodyssée – Radweg", desc: "Traumhafter Radweg durch Pinienwälder entlang der Atlantikküste." },
+          { icon: "🦪", name: "Austernhäfen Gujan-Mestras", desc: "Frische Austern direkt vom Erzeuger am Bassin." },
+          { icon: "🏖️", name: "Dune du Pilat (20 Min.)", desc: "Europas größte Wanderdüne – mit Kindern ein Abenteuer!" },
+          { icon: "⛵", name: "Cap Ferret & Fähre", desc: "Kleine Fähre über das Bassin nach Arcachon – sehr beliebt." }
+        ]
       }
     ];
 
@@ -825,11 +857,24 @@
 
     const fmt = (d) => new Date(d).toLocaleDateString("de-DE", { day: "numeric", month: "short" });
 
-    const mapBounds = { minLat: 42.0, maxLat: 48.2, minLng: -5.2, maxLng: 7.5 };
-    const toPos = (lat, lng) => ({
-      x: ((lng - mapBounds.minLng) / (mapBounds.maxLng - mapBounds.minLng)) * 100,
-      y: ((mapBounds.maxLat - lat) / (mapBounds.maxLat - mapBounds.minLat)) * 100
-    });
+    // Hand-tuned positions so all 13 stops are clearly visible with no overlaps.
+    // Geographically approximate but route direction is preserved.
+    const SPOS = {
+      home: { x: 91, y: 6  },
+      1:    { x: 83, y: 10 },  // Belfort
+      2:    { x: 68, y: 21 },  // Pouilly-sur-Saône
+      3:    { x: 52, y: 33 },  // Clermont-Ferrand
+      4:    { x: 54, y: 47 },  // Millau
+      5:    { x: 66, y: 62 },  // Marseillan-Plage
+      6:    { x: 48, y: 65 },  // Carcassonne
+      7:    { x: 34, y: 62 },  // Argelès-Gazost
+      8:    { x: 19, y: 55 },  // Ur-Onea Bidart (FR)
+      9:    { x: 8,  y: 67 },  // Zarautz (ES)
+      10:   { x: 20, y: 76 },  // Noja
+      11:   { x: 8,  y: 85 },  // Vidiago / Llanes
+      12:   { x: 26, y: 60 },  // Pavillon Royal Bidart
+      13:   { x: 26, y: 41 },  // Les Pastourelles / Arcachon
+    };
 
     function App() {
       const [selected, setSelected] = React.useState(null);
@@ -849,8 +894,8 @@
         }, 50);
       };
 
-      const homePos = toPos(47.583, 9.883);
-      const routePoints = BOOKINGS.map(b => toPos(b.lat, b.lng));
+      const homePos = SPOS.home;
+      const routePoints = BOOKINGS.map(b => SPOS[b.id]);
 
 
       React.useEffect(() => {
@@ -919,7 +964,7 @@
                   <div className="map-water" style={{ right: "5%", top: "68%" }}>Mittelmeer</div>
                   <div className="map-water" style={{ left: "2%", top: "40%", transform: "rotate(-15deg)" }}>Atlantik</div>
                   {BOOKINGS.map((b, i) => {
-                    const pos = toPos(b.lat, b.lng);
+                    const pos = SPOS[b.id];
                     const isSel = selected === b.id;
                     return (
                       <div key={b.id} className="map-dot" onClick={() => scrollTo(b.id)}
