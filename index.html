@@ -723,7 +723,7 @@
       {
         id: 6, startDate: "2026-05-27", endDate: "2026-05-30",
         name: "Camping de la Cité", location: "Carcassonne", region: "Okzitanien",
-        nights: 3, cost: 74.58, status: "pending", lat: 43.2065, lng: 2.3631,
+        nights: 3, cost: 74.58, status: "confirmed", lat: 43.2065, lng: 2.3631,
         ref: "O20260216SCHMI19408726", color: "#9C27B0", emoji: "🏰",
         website: "https://campingcitecarcassonne.com/",
         maps: "https://maps.google.com/?q=Camping+de+la+Cite+Carcassonne",
@@ -817,35 +817,35 @@
         ]
       },
       {
+        id: 13, startDate: "2026-06-26", endDate: "2026-07-03",
+        name: "Camping Les Pastourelles", location: "Lège-Cap-Ferret", region: "Aquitanien",
+        nights: 7, cost: 276.34, status: "confirmed", lat: 44.7059, lng: -1.1833,
+        ref: "O20260304SCHMI18501316", color: "#26A69A", emoji: "🌲",
+        website: "http://www.campinglespastourelles.fr",
+        maps: "https://maps.google.com/?q=Camping+Les+Pastourelles+Lege-Cap-Ferret",
+        description: "Naturcamping in den Pinienwäldern der Halbinsel Cap Ferret. Nur wenige Kilometer vom Arcachon-Becken und dem Atlantik entfernt.",
+        highlights: ["Anzahlung 66€ bezahlt – Restzahlung 210,34€ fällig bis 26.05.", "Stellplatz für Transporter/Wohnwagen", "Natur pur – Pinienwald & Dünenlandschaft"],
+        activities: [
+          { icon: "🌊", name: "Bassin d'Arcachon", desc: "Riesige Lagune mit flachen Stränden – perfekt für Kleinkinder." },
+          { icon: "🏖️", name: "Dune du Pilat", desc: "Höchste Wanderdüne Europas (110m) – absolutes Highlight!" },
+          { icon: "🦪", name: "Austern aus Arcachon", desc: "Weltberühmte Austern direkt beim Erzeuger probieren." },
+          { icon: "🚲", name: "Fahrradwege Cap Ferret", desc: "Die ganze Halbinsel ist wunderbar mit dem Rad erkundbar." }
+        ]
+      },
+      {
         id: 12, startDate: "2026-06-22", endDate: "2026-06-26",
         name: "Camping Le Pavillon Royal", location: "Bidart", region: "Baskenland (FR)",
-        nights: 4, cost: 279.88, status: "pending", lat: 43.4372, lng: -1.5889,
+        nights: 4, cost: 279.88, status: "confirmed", lat: 43.4372, lng: -1.5889,
         ref: "O20260304SCHMI47922568", color: "#E91E63", emoji: "🏖️",
         website: "https://www.pavillon-royal.com/en/welcome/",
         maps: "https://maps.google.com/?q=Camping+Le+Pavillon+Royal+Bidart",
         description: "5-Sterne-Rückkehr an die Baskenküste! Auf dem Heimweg nochmal Bidart genießen – diesmal mit Meerblick, Pool und direktem Strandzugang.",
-        highlights: ["RED area Pitch (Wohnwagenstellplatz)", "Anzahlung 87€ bezahlt – Restbetrag 192,88€ vor Ort", "Finale Bestätigung durch Rezeption ausstehend"],
+        highlights: ["RED area Pitch (Wohnwagenstellplatz, 10m × 8m)", "Anzahlung 87€ bezahlt – Restzahlung 192,88€ fällig bis 23.05.", "✅ Bestätigt durch Rezeption (28.02.2026)"],
         activities: [
           { icon: "🌊", name: "Strände von Bidart", desc: "Traumhafte Surfstrände, auch ruhigere Buchten für Kleinkinder." },
           { icon: "🏙️", name: "Biarritz (10 Min.)", desc: "Eleganter Badeort, Aquarium, Leuchtturm, tolle Restaurants." },
           { icon: "🍷", name: "Bayonne (15 Min.)", desc: "Schinken & Schokolade! Nette Altstadt am Fluss." },
           { icon: "🚂", name: "La Rhune (Zahnradbahn)", desc: "Historische Bahn auf den Hausberg – Panorama über Baskenland." }
-        ]
-      },
-      {
-        id: 13, startDate: "2026-06-26", endDate: "2026-07-03",
-        name: "Camping Les Pastourelles", location: "Claouey / Cap Ferret", region: "Bassin d'Arcachon (FR)",
-        nights: 7, cost: 276.34, status: "pending", lat: 44.7617, lng: -1.1417,
-        ref: "O20260304SCHMI18501316", color: "#0288D1", emoji: "🌲",
-        website: "https://www.campinglespastourelles.fr/",
-        maps: "https://maps.google.com/?q=Camping+Les+Pastourelles+Claouey+Cap+Ferret",
-        description: "Kommunaler Pinienwald-Camping direkt am Bassin d'Arcachon. 13 Hektar Schatten, ruhig, wohnwagenfreundlich – perfekter Erholungsstopp nach Spanien.",
-        highlights: ["13 ha Pinienwald – viel Schatten", "Direkt am Bassin-Strand", "Anzahlung 66€ bezahlt – Restbetrag 210,34€ vor Ort", "Finale Bestätigung durch Rezeption ausstehend"],
-        activities: [
-          { icon: "🚴", name: "Vélodyssée – Radweg", desc: "Traumhafter Radweg durch Pinienwälder entlang der Atlantikküste." },
-          { icon: "🦪", name: "Austernhäfen Gujan-Mestras", desc: "Frische Austern direkt vom Erzeuger am Bassin." },
-          { icon: "🏖️", name: "Dune du Pilat (20 Min.)", desc: "Europas größte Wanderdüne – mit Kindern ein Abenteuer!" },
-          { icon: "⛵", name: "Cap Ferret & Fähre", desc: "Kleine Fähre über das Bassin nach Arcachon – sehr beliebt." }
         ]
       }
     ];
@@ -857,24 +857,145 @@
 
     const fmt = (d) => new Date(d).toLocaleDateString("de-DE", { day: "numeric", month: "short" });
 
-    // Hand-tuned positions so all 13 stops are clearly visible with no overlaps.
-    // Geographically approximate but route direction is preserved.
-    const SPOS = {
-      home: { x: 91, y: 6  },
-      1:    { x: 83, y: 10 },  // Belfort
-      2:    { x: 68, y: 21 },  // Pouilly-sur-Saône
-      3:    { x: 52, y: 33 },  // Clermont-Ferrand
-      4:    { x: 54, y: 47 },  // Millau
-      5:    { x: 66, y: 62 },  // Marseillan-Plage
-      6:    { x: 48, y: 65 },  // Carcassonne
-      7:    { x: 34, y: 62 },  // Argelès-Gazost
-      8:    { x: 19, y: 55 },  // Ur-Onea Bidart (FR)
-      9:    { x: 8,  y: 67 },  // Zarautz (ES)
-      10:   { x: 20, y: 76 },  // Noja
-      11:   { x: 8,  y: 85 },  // Vidiago / Llanes
-      12:   { x: 26, y: 60 },  // Pavillon Royal Bidart
-      13:   { x: 26, y: 41 },  // Les Pastourelles / Arcachon
-    };
+    const mapBounds = { minLat: 42.0, maxLat: 48.2, minLng: -5.2, maxLng: 7.5 };
+    const toPos = (lat, lng) => ({
+      x: ((lng - mapBounds.minLng) / (mapBounds.maxLng - mapBounds.minLng)) * 100,
+      y: ((mapBounds.maxLat - lat) / (mapBounds.maxLat - mapBounds.minLat)) * 100
+    });
+
+    function TimelineBar({ bookings }) {
+      const TRIP_START = new Date("2026-05-10");
+      const TRIP_END   = new Date("2026-08-08");
+
+      // Colors: confirmed, pending, open
+      const C = { confirmed: "#5B8C5A", pending: "#E8B84B", open: "#DDE3EA" };
+      const LABEL = { confirmed: "Gebucht", pending: "Angefragt", open: "Offen" };
+
+      // Build a lookup: dateString → status
+      const dayMap = {};
+      for (const b of bookings) {
+        let d = new Date(b.startDate);
+        const end = new Date(b.endDate);
+        while (d < end) {
+          const key = d.toISOString().slice(0, 10);
+          // confirmed beats pending
+          if (!dayMap[key] || b.status === "confirmed") dayMap[key] = b.status;
+          d.setDate(d.getDate() + 1);
+        }
+      }
+
+      // Build day array
+      const days = [];
+      let d = new Date(TRIP_START);
+      while (d < TRIP_END) {
+        const key = d.toISOString().slice(0, 10);
+        days.push({ key, status: dayMap[key] || "open", date: new Date(d) });
+        d.setDate(d.getDate() + 1);
+      }
+      const total = days.length;
+
+      // Stats
+      const nConfirmed = days.filter(d => d.status === "confirmed").length;
+      const nPending   = days.filter(d => d.status === "pending").length;
+      const nOpen      = days.filter(d => d.status === "open").length;
+
+      // Month label positions (first day of each month within range)
+      const monthLabels = [];
+      let m = new Date(TRIP_START.getFullYear(), TRIP_START.getMonth(), 1);
+      while (m <= TRIP_END) {
+        if (m >= TRIP_START) {
+          const idx = Math.round((m - TRIP_START) / 86400000);
+          if (idx <= total) {
+            monthLabels.push({
+              idx,
+              label: m.toLocaleDateString("de-DE", { month: "short" })
+            });
+          }
+        }
+        m = new Date(m.getFullYear(), m.getMonth() + 1, 1);
+      }
+
+      // Collapse consecutive same-status days into segments for rendering
+      const segments = [];
+      let seg = null;
+      days.forEach((day, i) => {
+        if (!seg || seg.status !== day.status) {
+          if (seg) segments.push(seg);
+          seg = { status: day.status, start: i, count: 1, firstDate: day.key };
+        } else {
+          seg.count++;
+        }
+      });
+      if (seg) segments.push(seg);
+
+      return (
+        <div style={{ background: "white", borderRadius: 16, padding: "18px 20px 22px", marginBottom: 16, boxShadow: "0 2px 12px rgba(0,0,0,0.07)", border: "1px solid #EAEEF2" }}>
+
+          {/* Header */}
+          <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
+            <span style={{ fontWeight: 800, fontSize: 15, color: "#37474F" }}>📅 Reisezeitraum</span>
+            <span style={{ fontSize: 12, color: "#90A4AE" }}>10. Mai – 8. Aug 2026 · {total} Tage</span>
+            <div style={{ marginLeft: "auto", display: "flex", gap: 12, flexWrap: "wrap" }}>
+              {[["confirmed", nConfirmed], ["pending", nPending], ["open", nOpen]].map(([s, n]) => (
+                <div key={s} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12 }}>
+                  <div style={{ width: 10, height: 10, borderRadius: 2, background: C[s], flexShrink: 0 }} />
+                  <span style={{ color: "#546E7A", fontWeight: 600 }}>{n}d</span>
+                  <span style={{ color: "#90A4AE" }}>{LABEL[s]}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Day bar */}
+          <div style={{ position: "relative" }}>
+            {/* The bar itself */}
+            <div style={{ display: "flex", height: 20, borderRadius: 6, overflow: "hidden", gap: 0 }}>
+              {segments.map((seg, i) => (
+                <div key={i}
+                  style={{
+                    flex: seg.count,
+                    background: C[seg.status],
+                    transition: "opacity 0.15s",
+                    borderLeft: i > 0 && seg.status !== segments[i-1].status ? "1px solid rgba(255,255,255,0.4)" : "none"
+                  }}
+                  title={`${LABEL[seg.status]}: ${seg.count} Tag${seg.count !== 1 ? "e" : ""} ab ${seg.firstDate}`}
+                />
+              ))}
+            </div>
+
+            {/* Month labels below */}
+            <div style={{ position: "relative", height: 22, marginTop: 3 }}>
+              {monthLabels.map((m, i) => (
+                <div key={i} style={{
+                  position: "absolute",
+                  left: (m.idx / total * 100) + "%",
+                  transform: "translateX(-50%)",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  color: "#90A4AE",
+                  whiteSpace: "nowrap",
+                  userSelect: "none"
+                }}>
+                  <div style={{ width: 1, height: 4, background: "#CFD8DC", margin: "0 auto 2px" }} />
+                  {m.label}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Progress line */}
+          <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ flex: 1, height: 4, borderRadius: 2, background: "#EAEEF2", overflow: "hidden" }}>
+              <div style={{ width: ((nConfirmed + nPending) / total * 100) + "%", height: "100%", background: "linear-gradient(90deg, " + C.confirmed + ", " + C.pending + ")", borderRadius: 2 }} />
+            </div>
+            <span style={{ fontSize: 11, fontWeight: 800, color: "#5B8C5A", whiteSpace: "nowrap" }}>
+              {Math.round((nConfirmed + nPending) / total * 100)}% verplant
+            </span>
+          </div>
+
+        </div>
+      );
+    }
 
     function App() {
       const [selected, setSelected] = React.useState(null);
@@ -894,8 +1015,8 @@
         }, 50);
       };
 
-      const homePos = SPOS.home;
-      const routePoints = BOOKINGS.map(b => SPOS[b.id]);
+      const homePos = toPos(47.583, 9.883);
+      const routePoints = BOOKINGS.map(b => toPos(b.lat, b.lng));
 
 
       React.useEffect(() => {
@@ -942,6 +1063,8 @@
               ))}
             </div>
 
+            <TimelineBar bookings={BOOKINGS} />
+
             <div className="map-wrap" id="route-map">
               <div className="map-container">
                 <div className="map-header">
@@ -964,7 +1087,7 @@
                   <div className="map-water" style={{ right: "5%", top: "68%" }}>Mittelmeer</div>
                   <div className="map-water" style={{ left: "2%", top: "40%", transform: "rotate(-15deg)" }}>Atlantik</div>
                   {BOOKINGS.map((b, i) => {
-                    const pos = SPOS[b.id];
+                    const pos = toPos(b.lat, b.lng);
                     const isSel = selected === b.id;
                     return (
                       <div key={b.id} className="map-dot" onClick={() => scrollTo(b.id)}
@@ -1071,7 +1194,7 @@
           </div>
 
           <div className="footer">
-            Stand: Februar 2026 · Mit ❤️ geplant für Familie Schmidt
+            Stand: März 2026 · Mit ❤️ geplant für Familie Schmidt
           </div>
 
           <button
